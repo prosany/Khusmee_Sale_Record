@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "whatsapp-sales-report",
+  "private_key_id": "a7c01e6d380a66b2b4180293708acdd93122dd93",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCOEUcR5R9ieThN\ngGlgIcGj7iI/MR5EuOtmn14F7KFa51rNzIb032v1p8bke6Ybvuij9hp1+gR4T2Ot\nYjyip2zM5QpxkhK0ffxEn1yoht/9DuWKYTfO4NZColye7ogTwKiQynoZ/1xtaSZ4\n/FfuTUNGFJxPPL2/9752rsFfq7NRoICovB+4RPMKuszPTUu+yxl8bbrout0JnNdC\njGHCLlTe9dafh87aH+kI/FTXyuEU4JRMCWAaCmVVp/9S0XDGJLEqIetSqeFVYXmY\nxmlcZm0AFExJzuGFQSPQlAzRNVpqVkDw0sdKBHtEGb0As3iTy6gxVVSfijO9jsgG\njOHNwJLhAgMBAAECggEAGwWjSH6VwSPAd1FY+b2B+P3XCsD7emPX9p2Sgzr2l/VQ\neruP4ezLOp8OgDAasMVXt7QcZVtIVV/4XCbG1MNWuQRJv79iim06Og070RxSZ25Z\nb8A9Hr76UhNS3bIONP+csGmq3t4JBRCOjk2lJgERLjfGYXXyu5xSYH2t71YX1gsS\nRrG4lE54oK3MJbexsZVVA5dY/igJSTBuhh0tk9rrQwDmjkNhQLjnOz9Jft7I3ozw\nN4IKoCrw+keX4V08IlBrqOjMd4c0tf2PJDnPmSyHYRYHzrQpD9hB64Vm6V868JiT\nA1ZZLekWD5h8DdL3dKgE6JsFoBoAyZ0d5gf6DSdXiQKBgQDFTEVbTsOMS8/mITgb\nvL6/42SAAtLZ+Y6g4uG4BrVlD0h+exddIxm/q9Izo1hl3lOmyJZtyKMCPympKA4e\n9DfnYzKoyTNAbOu/SGZgtdb9N+D4USrogp1v6O/VXMID0XHxsgBuwoDAl6ZjUy8r\nQGkAYgNVKmMNHf6BItQmUOPWjQKBgQC4VjsqBu2pbOAFLTqGaQ9I5I1hw38Z/L8f\nCwflRxnzxCHWYMG9ArV0ECGPmLjYZtNvW5T+XmRVmdrcf5O8dKqxAMmL/W40HwfS\nsgcs2MpYU6gcroOXVnaw8RzPNH8UL2emT/5Avhh6GkJgpMcsi/GkDI/mpZNm6TXI\nIlSK3+7ypQKBgQCSdb3+vAd5vEWGph5KqOBI/fp69J2lZhY05Hd+7qv1a1T7X1DG\nuOnCWUBfSOC0LkiWxMy2jnxDjLPWeH+TBuQBBqhyl3lOWAzhIFOvcw03SCXe8BIU\nK/HHQ3nWP1dfEjmtm9+qWQTO80R28ydOyi+oMxoaPK7u69cj8cDe+KlJeQKBgFwx\nPGvbhTeMLUpJgZDBsJRLQm6XwNS1dLzI3o0MD228NRQr1hl65leCzdYskp4gZzS1\ngAHsIZAyX6SR5ciGLOxTsXljKZ/FuTrmMPJ8Bk9An76ghU3GP5xlKnxzC++DefpS\n3Z1xtXoz8ei14Ktl3lemtL2tJ9h7YJuUl+XQ84fFAoGBAML2oloYDflFNeCzncpi\n61rYDRM3AjgMqqwZlz+uXVrD5Ng0xTp9+b+zFl5ISlEcb1Z+ThOHjbUjld9kjSS7\nf7maCrrE8mwfs8OLjYr96dr4D1hqcGp2EaCR08yLqcluvvs7kPg1XvweR/K5pWKQ\nVLR/LqHHxTnkDyQv3byfnzxJ\n-----END PRIVATE KEY-----\n",
+  "client_email": "google-sheet-sales@whatsapp-sales-report.iam.gserviceaccount.com",
+  "client_id": "105893231494066618450",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/google-sheet-sales%40whatsapp-sales-report.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

@@ -33,9 +33,6 @@ app.get('/webhook', (req, res) => {
 
 // Receive messages
 app.post('/webhook', async (req, res) => {
-  // Acknowledge receipt immediately
-  res.sendStatus(200);
-
   const entry = req.body.entry || [];
   for (const e of entry) {
     const changes = e.changes || [];
@@ -197,6 +194,7 @@ app.post('/webhook', async (req, res) => {
       }
     }
   }
+  res.sendStatus(200);
 });
 
 app.listen(process.env.PORT || 9500, () => console.log('Server running'));
