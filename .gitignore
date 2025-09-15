@@ -1,0 +1,27 @@
+node_modules
+.env*
+!.env.example
+.DS_Store
+npm-debug.log*
+yarn-error.log*
+dist
+coverage
+.vscode
+.idea
+*.swp
+*.swo
+*.log
+*.tmp
+*.temp
+*.bak
+*.old
+*.orig
+
+# MacOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Service account keys
+service-account.json
+credentials.json
