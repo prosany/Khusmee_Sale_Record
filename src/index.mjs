@@ -187,6 +187,40 @@ app.post('/webhook', async (req, res) => {
           const message = `Sale Info:\nSale ID: ${id}\nProduct Name: ${product}\nPrice: ${price}\nDue: ${due}\nQuantity: ${quantity}\nSellerNumber: ${userNumber}\nSale Date: ${timestamp}`;
 
           await sendWhatsAppText(from, message);
+        } else if (command === '#help') {
+          const helpMessage = `
+📌 *Available Commands*
+
+1️⃣ *Add a Sale*  
+#sale (<product>) <unitPrice> <quantity> <amountReceived>  
+👉 Example: #sale (Jam Jam 3 Pcs) 1050 1 1050
+Note: If amountReceived is equal to total price, due will be 0. 
+
+2️⃣ *Update a Sale*  
+#update_sale <saleId> (<product>) <unitPrice> <quantity> <amountReceived>  
+👉 Example: #update_sale 123456 (Jam Jam 3 Pcs) 1050 1 1050  
+
+3️⃣ *Remove a Sale*  
+#remove_sale <saleId>  
+👉 Example: #remove_sale 123456 
+
+4️⃣ *View Your Totals*  
+#total_sale  
+👉 Shows your total sales, due, and items.  
+
+5️⃣ *Get Sales Report (All Sellers)*  
+#total_sales_report  
+👉 Shows report grouped by seller number.  
+
+6️⃣ *Get a Sale by ID*  
+#get <saleId>  
+👉 Example: #get 123456
+
+7️⃣ *Help (this menu)*  
+#help  
+
+⚡ Thank you for using Khusmee's Sales Bot!`;
+          await sendWhatsAppText(from, helpMessage);
         } else {
           // AI fallback
           const reply = await askAI(textBody);
