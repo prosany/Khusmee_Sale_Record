@@ -1,20 +1,32 @@
 import { google } from 'googleapis';
+import fs from 'fs';
 import path from 'path';
-import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 import momentTZ from 'moment-timezone';
 dotenv.config();
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-const KEYFILEPATH = path.join(__dirname, '../service-account.json');
+const KEYFILEPATH = path.join(process.cwd(), 'service-account.json');
 const SCOPES = ['https://www.googleapis.com/auth/spreadsheets'];
 
-const auth = new google.auth.GoogleAuth({
-  keyFile: KEYFILEPATH,
-  scopes: SCOPES,
-});
+let auth;
+
+// Try local JSON first
+if (fs.existsSync(KEYFILEPATH)) {
+  auth = new google.auth.GoogleAuth({
+    keyFile: KEYFILEPATH,
+    scopes: SCOPES,
+  });
+} else if (process.env.GOOGLE_SERVICE_ACCOUNT) {
+  const serviceAccount = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT);
+  auth = new google.auth.GoogleAuth({
+    credentials: serviceAccount,
+    scopes: SCOPES,
+  });
+} else {
+  throw new Error(
+    'Google service account credentials not found. Place service-account.json in the project root or set GOOGLE_SERVICE_ACCOUNT env variable.'
+  );
+}
 
 const sheets = google.sheets({ version: 'v4', auth });
 const SPREADSHEET_ID = process.env.SPREADSHEET_ID;
@@ -77,7 +89,6 @@ export async function updateSale(sale) {
   const rowIndex = rows.findIndex((r) => r[0] === sale.id);
   if (rowIndex === -1) return false;
 
-  // Keep the old timestamp (last column, index 6)
   const oldTimestamp = rows[rowIndex][6] || '';
 
   const values = [
