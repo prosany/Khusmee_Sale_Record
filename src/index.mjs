@@ -197,6 +197,4 @@ app.post('/webhook', async (req, res) => {
   }
 });
 
-app.listen(process.env.PORT || 9500, () => {
-  console.log('Server running'), console.log(process.env);
-});
+app.listen(process.env.PORT || 9500, () => console.log('Server running'));
