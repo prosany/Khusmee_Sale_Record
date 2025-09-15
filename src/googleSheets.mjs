@@ -1,5 +1,6 @@
 import { google } from 'googleapis';
 import path from 'path';
+import fs from 'fs';
 import dotenv from 'dotenv';
 import momentTZ from 'moment-timezone';
 dotenv.config();
@@ -7,10 +8,30 @@ dotenv.config();
 const serviceAccountPath = path.join(process.cwd(), 'service-account.json');
 const SCOPES = ['https://www.googleapis.com/auth/spreadsheets'];
 
-const auth = new google.auth.GoogleAuth({
-  keyFile: serviceAccountPath,
-  scopes: SCOPES,
-});
+let auth;
+
+if (fs.existsSync(serviceAccountPath)) {
+  // ✅ Use local file (works in local dev)
+  auth = new google.auth.GoogleAuth({
+    keyFile: serviceAccountPath,
+    scopes: SCOPES,
+  });
+} else if (process.env.GOOGLE_SERVICE_ACCOUNT) {
+  // ✅ Use env (works in Render/Vercel)
+  const serviceAccount = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT);
+
+  // Fix private_key newlines
+  serviceAccount.private_key = serviceAccount.private_key.replace(/\\n/g, '\n');
+
+  auth = new google.auth.GoogleAuth({
+    credentials: serviceAccount,
+    scopes: SCOPES,
+  });
+} else {
+  throw new Error(
+    'Google service account not found. Provide service-account.json or GOOGLE_SERVICE_ACCOUNT env variable.'
+  );
+}
 
 const sheets = google.sheets({ version: 'v4', auth });
 const SPREADSHEET_ID = process.env.SPREADSHEET_ID;
