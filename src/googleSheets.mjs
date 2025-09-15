@@ -17,14 +17,20 @@ if (fs.existsSync(KEYFILEPATH)) {
     scopes: SCOPES,
   });
 } else if (process.env.GOOGLE_SERVICE_ACCOUNT) {
-  const serviceAccount = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT);
-  auth = new google.auth.GoogleAuth({
-    credentials: serviceAccount,
-    scopes: SCOPES,
-  });
+  try {
+    const serviceAccount = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT);
+    auth = new google.auth.GoogleAuth({
+      credentials: serviceAccount,
+      scopes: SCOPES,
+    });
+  } catch (err) {
+    throw new Error(
+      'Failed to parse GOOGLE_SERVICE_ACCOUNT env variable. Ensure it is valid JSON.'
+    );
+  }
 } else {
   throw new Error(
-    'Google service account credentials not found. Place service-account.json in the project root or set GOOGLE_SERVICE_ACCOUNT env variable.'
+    'Google service account credentials not found. Place service-account.json in project root or set GOOGLE_SERVICE_ACCOUNT env variable.'
   );
 }
 
@@ -32,83 +38,106 @@ const sheets = google.sheets({ version: 'v4', auth });
 const SPREADSHEET_ID = process.env.SPREADSHEET_ID;
 
 export async function addSale(sale) {
-  const values = [
-    [
-      sale.id,
-      sale.product,
-      sale.price,
-      sale.due,
-      sale.quantity,
-      sale.userNumber,
-      momentTZ(new Date().toISOString()).tz('Asia/Dhaka').format('llll'),
-    ],
-  ];
-  await sheets.spreadsheets.values.append({
-    spreadsheetId: SPREADSHEET_ID,
-    range: 'Sales!A:G',
-    valueInputOption: 'USER_ENTERED',
-    requestBody: { values },
-  });
+  try {
+    const values = [
+      [
+        sale.id,
+        sale.product,
+        sale.price,
+        sale.due,
+        sale.quantity,
+        sale.userNumber,
+        momentTZ(new Date().toISOString()).tz('Asia/Dhaka').format('llll'),
+      ],
+    ];
+    await sheets.spreadsheets.values.append({
+      spreadsheetId: SPREADSHEET_ID,
+      range: 'Sales!A:G',
+      valueInputOption: 'USER_ENTERED',
+      requestBody: { values },
+    });
+    return true;
+  } catch (err) {
+    console.error('Error adding sale:', err);
+    return false;
+  }
 }
 
 export async function getSales() {
-  const res = await sheets.spreadsheets.values.get({
-    spreadsheetId: SPREADSHEET_ID,
-    range: 'Sales!A:G',
-  });
-  return res.data.values || [];
+  try {
+    const res = await sheets.spreadsheets.values.get({
+      spreadsheetId: SPREADSHEET_ID,
+      range: 'Sales!A:G',
+    });
+    return res.data.values || [];
+  } catch (err) {
+    console.error('Error fetching sales:', err);
+    return [];
+  }
 }
 
 export async function removeSale(saleId) {
-  const rows = await getSales();
-  const rowIndex = rows.findIndex((r) => r[0] === saleId);
-  if (rowIndex === -1) return false;
+  try {
+    const rows = await getSales();
+    const rowIndex = rows.findIndex((r) => r[0] === saleId);
+    if (rowIndex === -1) return false;
 
-  const requests = [
-    {
-      deleteDimension: {
-        range: {
-          sheetId: 0,
-          dimension: 'ROWS',
-          startIndex: rowIndex,
-          endIndex: rowIndex + 1,
+    const requests = [
+      {
+        deleteDimension: {
+          range: {
+            sheetId: 0, // Default first sheet
+            dimension: 'ROWS',
+            startIndex: rowIndex,
+            endIndex: rowIndex + 1,
+          },
         },
       },
-    },
-  ];
+    ];
 
-  await sheets.spreadsheets.batchUpdate({
-    spreadsheetId: SPREADSHEET_ID,
-    requestBody: { requests },
-  });
-  return true;
+    await sheets.spreadsheets.batchUpdate({
+      spreadsheetId: SPREADSHEET_ID,
+      requestBody: { requests },
+    });
+
+    return true;
+  } catch (err) {
+    console.error('Error removing sale:', err);
+    return false;
+  }
 }
 
 export async function updateSale(sale) {
-  const rows = await getSales();
-  const rowIndex = rows.findIndex((r) => r[0] === sale.id);
-  if (rowIndex === -1) return false;
+  try {
+    const rows = await getSales();
+    const rowIndex = rows.findIndex((r) => r[0] === sale.id);
+    if (rowIndex === -1) return false;
 
-  const oldTimestamp = rows[rowIndex][6] || '';
+    // Keep the old timestamp
+    const oldTimestamp = rows[rowIndex][6] || '';
 
-  const values = [
-    [
-      sale.id,
-      sale.product,
-      sale.price,
-      sale.due,
-      sale.quantity,
-      sale.userNumber,
-      oldTimestamp,
-    ],
-  ];
+    const values = [
+      [
+        sale.id,
+        sale.product,
+        sale.price,
+        sale.due,
+        sale.quantity,
+        sale.userNumber,
+        oldTimestamp,
+      ],
+    ];
 
-  await sheets.spreadsheets.values.update({
-    spreadsheetId: SPREADSHEET_ID,
-    range: `Sales!A${rowIndex + 1}:G${rowIndex + 1}`,
-    valueInputOption: 'USER_ENTERED',
-    requestBody: { values },
-  });
+    await sheets.spreadsheets.values.update({
+      spreadsheetId: SPREADSHEET_ID,
+      range: `Sales!A${rowIndex + 1}:G${rowIndex + 1}`,
+      valueInputOption: 'USER_ENTERED',
+      requestBody: { values },
+    });
 
-  return true;
+    return true;
+  } catch (err) {
+    console.error('Error updating sale:', err);
+    return false;
+  }
 }

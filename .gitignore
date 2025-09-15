@@ -25,3 +25,4 @@ coverage
 # Service account keys
 service-account.json
 credentials.json
+.vercel
