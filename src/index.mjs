@@ -14,6 +14,10 @@ const app = express();
 app.use(express.json());
 const META_VERIFY_TOKEN = process.env.META_VERIFY_TOKEN;
 
+app.get('/', (req, res) => {
+  res.send('WhatsApp Sales Bot is running.');
+});
+
 // Webhook verification
 app.get('/webhook', (req, res) => {
   const mode = req.query['hub.mode'];
