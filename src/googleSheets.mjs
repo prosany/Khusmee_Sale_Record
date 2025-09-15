@@ -1,19 +1,14 @@
 import { google } from 'googleapis';
 import path from 'path';
-import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 import momentTZ from 'moment-timezone';
 dotenv.config();
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-const KEYFILEPATH = path.join(process.cwd(), 'service-account.json');
-console.log('🌺 | KEYFILEPATH:', KEYFILEPATH);
+const serviceAccountPath = path.join(process.cwd(), 'service-account.json');
 const SCOPES = ['https://www.googleapis.com/auth/spreadsheets'];
 
 const auth = new google.auth.GoogleAuth({
-  keyFile: KEYFILEPATH,
+  keyFile: serviceAccountPath,
   scopes: SCOPES,
 });
 
