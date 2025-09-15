@@ -23,6 +23,6 @@ coverage
 .LSOverride
 
 # Service account keys
-# service-account.json
+service-account.json
 credentials.json
 .vercel
